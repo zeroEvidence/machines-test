@@ -9,12 +9,13 @@
 	let isDeleteable = false;
 
 	function clickHandler(event: MouseEvent) {
+		console.log({ event });
 		if (!isEditable) return;
 
 		machines.push({
 			position: {
-				x: event.x,
-				y: event.y
+				x: event.offsetX,
+				y: event.offsetY
 			},
 			startTime: Date.now() / 1000,
 			colourNumber: 1,
@@ -77,6 +78,7 @@
 			{machine}
 			{cooldownTimer}
 			{isEditable}
+			{isDeleteable}
 			clickHandler={(e) => {
 				machineClickHandler(e, i);
 			}}

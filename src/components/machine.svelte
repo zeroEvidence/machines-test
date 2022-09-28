@@ -7,6 +7,7 @@
 	export let clickHandler: (event: any) => void;
 	export let cooldownTimer: number;
 	export let isEditable: Boolean;
+	export let isDeleteable: Boolean;
 
 	let timerId: NodeJS.Timer;
 	let startTime: number = machine.startTime;
@@ -28,6 +29,7 @@
 	}
 
 	function occupiedHander() {
+		if (isDeleteable) return;
 		if (!hasBeenClicked) {
 			hasBeenClicked = true;
 			machine.hasBeenClicked = hasBeenClicked;
@@ -90,7 +92,7 @@
 			{Math.round(timeDiff / 60 / 60)}h<br />
 		{/if}
 		{#if Math.round(timeDiff / 60) >= 1}
-			{Math.round(timeDiff / 60)}m
+			{Math.round(timeDiff % 60)}m
 		{/if}
 	{/if}
 </div>
