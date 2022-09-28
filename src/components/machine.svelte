@@ -17,12 +17,14 @@
 	let timeDiff: number = machine.timeDiff;
 
 	function dragStart(event: any) {
+		console.log({ dragStart: event });
 		if (!isEditable) return;
-		event.dataTransfer.effectAllowed = 'move';
-		event.dataTransfer.dropEffect = 'move';
+		// event.dataTransfer.effectAllowed = 'move';
+		// event.dataTransfer.dropEffect = 'move';
 	}
 
 	function dragEnd(event: any) {
+		console.log({ dragEnd: event });
 		if (!isEditable) return;
 		machine.position.x = event.x;
 		machine.position.y = event.y;
@@ -39,6 +41,13 @@
 		machine.startTime = startTime;
 		colourNumber = calcColourNumber();
 		machine.colourNumber = colourNumber;
+	}
+
+	function touchMove(e: any) {
+		console.log({ touchMove: e });
+		if (!isEditable) return;
+		machine.position.x = e.targetTouches[0].pageX;
+		machine.position.y = e.targetTouches[0].pageY;
 	}
 
 	$: ((_) => {
@@ -75,10 +84,14 @@
 	});
 </script>
 
+<!-- on:touchstart={dragStart} -->
+<!-- on:touchend={(e) => dragEnd(e)} -->
+
 <div
 	class="machine"
 	style={`left: ${machine.position.x - 15}px; top: ${machine.position.y - 15}px;`}
 	draggable={true}
+	on:touchmove={touchMove}
 	on:click={(e) => {
 		clickHandler(e);
 		occupiedHander();
