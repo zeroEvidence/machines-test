@@ -17,14 +17,12 @@
 	let timeDiff: number = machine.timeDiff;
 
 	function dragStart(event: any) {
-		console.log({ dragStart: event });
 		if (!isEditable) return;
 		// event.dataTransfer.effectAllowed = 'move';
 		// event.dataTransfer.dropEffect = 'move';
 	}
 
 	function dragEnd(event: any) {
-		console.log({ dragEnd: event });
 		if (!isEditable) return;
 		machine.position.x = event.x;
 		machine.position.y = event.y;
@@ -44,7 +42,6 @@
 	}
 
 	function touchMove(e: any) {
-		console.log({ touchMove: e });
 		if (!isEditable) return;
 		machine.position.x = e.targetTouches[0].pageX;
 		machine.position.y = e.targetTouches[0].pageY;
@@ -92,8 +89,11 @@
 	style={`left: ${machine.position.x - 15}px; top: ${machine.position.y - 15}px;`}
 	draggable={true}
 	on:touchmove={touchMove}
-	on:click={(e) => {
-		clickHandler(e);
+	on:click|stopPropagation={(e) => {
+		if (isEditable || isDeleteable) {
+			clickHandler(e);
+			return;
+		}
 		occupiedHander();
 	}}
 	on:dragstart={dragStart}
@@ -105,7 +105,7 @@
 			{Math.round(timeDiff / 60 / 60)}h<br />
 		{/if}
 		{#if Math.round(timeDiff / 60) >= 1}
-			{Math.round(timeDiff % 60)}m
+			{Math.round((timeDiff / 60) % 60)}m
 		{/if}
 	{/if}
 </div>

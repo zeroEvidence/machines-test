@@ -9,7 +9,6 @@
 	let isDeleteable = false;
 
 	function clickHandler(event: MouseEvent) {
-		console.log({ event });
 		if (!isEditable) return;
 
 		machines.push({
@@ -29,13 +28,13 @@
 	function machineClickHandler(event: any, i: number) {
 		if (isDeleteable) {
 			machines.splice(i, 1);
-			machines = machines;
-			return;
 		}
 
 		if (isEditable) {
 			return;
 		}
+
+		machines = machines;
 	}
 
 	onMount(() => {
